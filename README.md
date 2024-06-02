@@ -15,18 +15,18 @@ Este repositorio contiene una implementación del algoritmo de Huffman para la c
 
 Clona este repositorio en tu máquina local:
 
-    ```bash
-    [git clone https://github.com/tuusuario/huffman-compression.git](https://github.com/AaaronP/Proyecto-Intro-3.git)
-    cd Proyecto-Intro-3
-    ```
-
-3. No se requieren instalaciones adicionales, todas las dependencias son parte de la biblioteca estándar de Python.
-
-## Uso
-
-### Compresión
-
-Para comprimir un archivo, utiliza el siguiente comando:
+```bash
+git clone https://github.com/AaaronP/Proyecto-Intro-3.git
+cd Proyecto-Intro-3
+```
+## Estructura del proyecto
 
 ```bash
-python compress.py input_file output_file
+Proyecto-Intro-3/
+│
+├── README.md
+├── compress.py
+├── decompress.py
+├── huffman.py
+└── example.txt
+```
