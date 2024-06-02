@@ -13,18 +13,11 @@ Este repositorio contiene una implementación del algoritmo de Huffman para la c
 
 ## Instalación
 
-1. Clona este repositorio en tu máquina local:
+Clona este repositorio en tu máquina local:
 
     ```bash
-    git clone https://github.com/tuusuario/huffman-compression.git
-    cd huffman-compression
-    ```
-
-2. (Opcional) Crea y activa un entorno virtual:
-
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # En Windows: venv\Scripts\activate
+    [git clone https://github.com/tuusuario/huffman-compression.git](https://github.com/AaaronP/Proyecto-Intro-3.git)
+    cd Proyecto-Intro-3
     ```
 
 3. No se requieren instalaciones adicionales, todas las dependencias son parte de la biblioteca estándar de Python.
