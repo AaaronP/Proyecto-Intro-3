@@ -1,9 +1,5 @@
 > [!IMPORTANT]
 > Fuck eddy
-<<<<<<< HEAD
-> ```
-=======
->>>>>>> 6fdc0fef39bc3ce4c786a77c7648fa17d4d1bc67
 
 # Huffman Compression and Decompression
 
