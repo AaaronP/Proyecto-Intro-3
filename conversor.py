@@ -1,7 +1,7 @@
 import sys
 text = ''
 
-if len(sys.argv) == 0 :
+if len(sys.argv) == 0:
     print("El programa no tiene argumentos")
 else:
     path_file = sys.argv[1]
