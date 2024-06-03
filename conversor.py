@@ -1,3 +1,24 @@
+import sys
+text = ''
+
+if len(sys.argv) == 0 :
+    print("El programa no tiene argumentos")
+else:
+    path_file = sys.argv[1]
+    with open(path_file, "r") as h:
+        text = h.read()
+
+# Conversor
+# bits = bit.bitarray('00001111')
+# # Almacena la secuencia en un archivo binario
+# with open('binary.bin', 'wb') as bf:
+#     bits.tofile(bf)
+
+# Descompresor
+# bt = bit.bitarray()
+# with open('binary.bin', 'rb') as bf:
+#     bt.fromfile(bf)
+
 # Obtener los prefijos y su frecuencia
 # Domino: string
 # Codomino: lista de tuplas [(x: str, y: int), (...)]
@@ -49,6 +70,6 @@ def translate(trie, camino=''):
 
     return L + R    
 
-biblioteca = frecuancia('Hola mundo')
+biblioteca = frecuancia(text)
 trie = create_trie(biblioteca)
 print(translate(trie))
