@@ -10,29 +10,26 @@ def frecuancia(text):
         else:
             biblioteca[str(i)] += 1
 
-    return sorted(biblioteca.items(), key=lambda item: item[1], reverse=True)
+    # ordena las tuplas por su frecuencia
+    return sorted(biblioteca.items(), key=lambda item: item[1])
 
 # Crea el trie con listas
 # Dominio: lista con tuplas de los prefijos y frecuencias
 # Codominio: Un arbol binario trie [int, [list], [list]]
-def create_trie(res):
+def create_trie(prefixs):
+    # transforma los prefijos en la forma [prefix, [], []]
     biblioteca = []
-    for i in range(len(res)):
-        x, y = res[i]
+    for i in range(len(prefixs)):
+        x, y = prefixs[i]
         biblioteca.append(([x, [], []], y))
-
-    # Ordenando por la frecuencia
-    biblioteca.sort(key=lambda x: x[1])
 
     while len(biblioteca) > 1:
         (prefix1, freq1) = biblioteca.pop(0)
         (prefix2, freq2) = biblioteca.pop(0)
 
-        # fix
         node = [freq1 + freq2, prefix1, prefix2]
         
         biblioteca.append((node, freq1 + freq2))
-        #print(biblioteca)
         biblioteca.sort(key=lambda x: x[1])
 
     return biblioteca[0][0]
