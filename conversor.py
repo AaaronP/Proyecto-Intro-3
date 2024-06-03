@@ -1,4 +1,5 @@
 import sys
+path_file = ''
 text = ''
 
 if len(sys.argv) == 0:
@@ -59,6 +60,130 @@ def translate(trie, camino=''):
 
     return L + R
 
-biblioteca = frecuancia(text)
-trie = create_trie(biblioteca)
-print(translate(trie))
+def altura_trie(trie):
+    if not trie: return 0
+
+    v, left, right = trie
+
+    if not left and not right: return 0
+
+    ml = -1
+    mr = -1
+
+    if left:
+        ml = max(ml, altura_trie(left) + 1)
+    if right:
+        mr = max(mr, altura_trie(right) + 1)
+    
+    return max(ml, mr)
+
+def ancho_trie(trie):
+    if not trie: return 0
+
+    S = [(trie, 0)]
+    cLevel = 0
+    maxAux = 0
+    maxAncho = 0
+
+    while S:
+        nodo, level = S.pop(0)
+
+        if level == cLevel: maxAux += 1
+        else:
+            maxAncho = max(maxAncho, maxAux)
+            cLevel = level
+            maxAux = 1
+        
+        if nodo[1]:
+            S.append((nodo[1], level+1))
+        if nodo[2]:
+            S.append((nodo[2], level+1))
+        
+    maxAncho = max(maxAncho, maxAux)
+    return maxAncho
+
+def nodos_nivel(trie):
+    if not trie: return []
+
+    S = [(trie, 0)]
+    cLevels = []
+
+    while S:
+        nodo, level = S.pop(0)
+
+        if len(cLevels) <= level:
+            cLevels.append(0)
+
+        cLevels[level] += 1
+
+        if nodo[1]:
+            S.append((nodo[1], level+1))
+        if nodo[2]:
+            S.append((nodo[2], level+1))
+        
+    return cLevels
+    
+def create_huff(binary):
+    pass
+
+def create_stats(trie, tablaFreq):
+    altura = altura_trie(trie)
+    ancho = ancho_trie(trie)
+    nodosNivel = nodos_nivel(trie)
+
+    stats = {
+        "Altura del arbol": altura,
+        "Anchura del arbol": ancho,
+        "Cantidad de nodos por nivel": nodosNivel,
+        "Tabla de frecuencias": tablaFreq
+    }
+
+    with open(f'{path_file}.stats', 'w') as file:
+        for key, value in stats.items():
+            # verificar si es lista
+            if isinstance(value, list):
+                # Salto de linea
+                file.write(f"{key}:\n")
+                for item in value:
+                    if isinstance(item, tuple):
+                        file.write(f"  {item[0]}: {item[1]}\n")
+                    else:
+                        file.write(f"  {item}\n")
+            else:
+                file.write(f"{key}: {value}\n")
+
+def create_table(codigos):
+    # [prefijo, codigo]
+    tabla = []
+
+    for i, y in codigos:
+        tabla.append([i, y])
+
+    anchos = [max(len(str(fila[i])) for fila in tabla) for i in range(len(tabla[0]))]
+
+    lineas = []
+    for fila in tabla:
+        linea = "".join(str(fila[i]).ljust(anchos[i] + 2) for i in range(len(fila)))
+        lineas.append(linea)
+    contend = "\n".join(lineas)
+
+    name_file = f"{path_file}.table"
+    with open(name_file, "w") as ar:
+        ar.write(contend)
+
+
+def main():
+    biblioteca = frecuancia(text)
+    trie = create_trie(biblioteca)
+    codigos = translate(trie)
+    
+    binary = ''
+
+    create_table(codigos)
+    create_huff(binary)
+    create_stats(trie, biblioteca)
+
+    print(f"{path_file}.huff {path_file}.table {path_file}.stats")
+
+if __name__ == '__main__':
+    main()
