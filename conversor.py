@@ -1,4 +1,6 @@
+import bitarray as bit
 import sys
+
 path_file = ''
 text = ''
 
@@ -123,8 +125,20 @@ def nodos_nivel(trie):
         
     return cLevels
     
-def create_huff(binary):
-    pass
+def create_huff(codigos):
+    binary = ''
+    diccionario = {}
+
+    for i in codigos:
+        diccionario[i[0]] = i[1]
+
+    for i in text:
+        binary += diccionario[i]
+
+    bits = bit.bitarray(binary)
+
+    with open(f"{path_file}.huff", 'wb') as bf:
+        bits.tofile(bf)
 
 def create_stats(trie, tablaFreq):
     altura = altura_trie(trie)
@@ -140,18 +154,8 @@ def create_stats(trie, tablaFreq):
 
     with open(f'{path_file}.stats', 'w') as file:
         for key, value in stats.items():
-            # verificar si es lista
-            if isinstance(value, list):
-                # Salto de linea
-                file.write(f"{key}:\n")
-                for item in value:
-                    if isinstance(item, tuple):
-                        file.write(f"  {item[0]}: {item[1]}\n")
-                    else:
-                        file.write(f"  {item}\n")
-            else:
-                file.write(f"{key}: {value}\n")
-
+            file.write(f"{key}: {value}\n")
+    
 def create_table(codigos):
     # [prefijo, codigo]
     tabla = []
@@ -180,7 +184,7 @@ def main():
     binary = ''
 
     create_table(codigos)
-    create_huff(binary)
+    create_huff(codigos)
     create_stats(trie, biblioteca)
 
     print(f"{path_file}.huff {path_file}.table {path_file}.stats")
