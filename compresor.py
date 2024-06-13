@@ -208,8 +208,8 @@ def main():
     print(f"{path_file}.huff {path_file}.table {path_file}.stats")
 
     # Files bits size
-    print(f"Bits {path_file}: ", os.stat(path_file).st_size)
-    print(f"Bits {path_file}.huff: ", os.stat(f"{path_file}.huff").st_size)
+    print(path_file, os.stat(path_file).st_size, 'bits')
+    print(f"{path_file}.huff", os.stat(f"{path_file}.huff").st_size, 'bits')
 
 
 if __name__ == "__main__":
