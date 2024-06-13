@@ -54,28 +54,33 @@ def create_trie(prefixs):
 
     return biblioteca[0][0]
 
-
-def translate_aux(original, trie, binary, txt, i=0):
-    if len(binary) == i:
-        return txt
-
-    v, left, right = trie
-
-    if not left and not right and isinstance(v, str):
-        return translate_aux(original, original, binary, txt + v, i)
-
-    bit = int(binary[i])
-
-    if bit == 0 and left:
-        return translate_aux(original, left, binary, txt, i + 1)
-    if bit == 1 and right:
-        return translate_aux(original, right, binary, txt, i + 1)
-
-    return translate_aux(original, original, binary, txt, i + 1)
-
-
 def translate(trie, binary):
-    return translate_aux(trie, trie, binary, "", 0)
+    original = trie
+    txt = ""
+    i = 0
+    current_trie = trie
+
+    while i < len(binary):
+        v, left, right = current_trie
+
+        if not left and not right and isinstance(v, str):
+            txt += v
+            current_trie = original
+        else:
+            bit = int(binary[i])
+            if bit == 0 and left:
+                current_trie = left
+                i += 1
+            elif bit == 1 and right:
+                current_trie = right
+                i += 1
+            else:
+                current_trie = original
+
+        if current_trie == original and i < len(binary) and str(binary[i]) not in "01":
+            i += 1
+
+    return txt
 
 
 def main():
