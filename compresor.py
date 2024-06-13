@@ -136,7 +136,7 @@ def create_huff(codigos):
         binary += diccionario[i]
 
     bits = bit.bitarray(binary)
-
+ 
     with open(f"{path_file}.huff", 'wb') as bf:
         bits.tofile(bf)
 
@@ -162,7 +162,7 @@ def create_table(codigos):
 
     for i, y in codigos:
         tabla.append([i, y])
-
+    print(tabla)
     anchos = [max(len(str(fila[i])) for fila in tabla) for i in range(len(tabla[0]))]
 
     lineas = []
