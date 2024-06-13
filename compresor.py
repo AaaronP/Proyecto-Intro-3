@@ -1,5 +1,6 @@
 import bitarray as bit
 import sys
+import os
 
 path_file = ''
 text = ''
@@ -162,7 +163,7 @@ def create_table(codigos):
 
     for i, y in codigos:
         tabla.append([i, y])
-    print(tabla)
+    
     anchos = [max(len(str(fila[i])) for fila in tabla) for i in range(len(tabla[0]))]
 
     lineas = []
@@ -180,14 +181,16 @@ def main():
     biblioteca = frecuancia(text)
     trie = create_trie(biblioteca)
     codigos = translate(trie)
-    
-    binary = ''
 
     create_table(codigos)
     create_huff(codigos)
     create_stats(trie, biblioteca)
 
     print(f"{path_file}.huff {path_file}.table {path_file}.stats")
+
+    # Files bits size
+    print(f"Bits {path_file}: ", os.stat(path_file).st_size)
+    print(f"Bits {path_file}.huff: ", os.stat(f"{path_file}.huff").st_size)
 
 if __name__ == '__main__':
     main()
