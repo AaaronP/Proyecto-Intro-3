@@ -2,8 +2,8 @@ import bitarray as bit
 import sys
 import os
 
-path_file = ''
-text = ''
+path_file = ""
+text = ""
 
 if len(sys.argv) == 0:
     print("El programa no tiene argumentos")
@@ -11,6 +11,7 @@ else:
     path_file = sys.argv[1]
     with open(path_file, "r") as h:
         text = h.read()
+
 
 # Obtener los prefijos y su frecuencia
 # Domino: string
@@ -27,6 +28,7 @@ def frecuancia(text):
     # ordena las tuplas por su frecuencia
     return sorted(biblioteca.items(), key=lambda item: item[1])
 
+
 # Crea el trie con listas
 # Dominio: lista con tuplas de los prefijos y frecuencias
 # Codominio: Un arbol binario trie [int, [list], [list]]
@@ -42,33 +44,39 @@ def create_trie(prefixs):
         (prefix2, freq2) = biblioteca.pop(0)
 
         node = [freq1 + freq2, prefix1, prefix2]
-        
+
         biblioteca.append((node, freq1 + freq2))
         biblioteca.sort(key=lambda x: x[1])
 
     return biblioteca[0][0]
 
+
 # Obtenie el codigo para cada prefijo
 # Dominio: un arbol trie
 # Codominio: una lista con tuplas [(prefix, '010'), (...)]
-def translate(trie, camino=''):
-    if not trie: return []
+def translate(trie, camino=""):
+    if not trie:
+        return []
 
     v, left, right = trie
 
-    if not left and not right: return [(v, camino)]
+    if not left and not right:
+        return [(v, camino)]
 
-    L = translate(left, camino + '0')
-    R = translate(right, camino + '1')
+    L = translate(left, camino + "0")
+    R = translate(right, camino + "1")
 
     return L + R
 
+
 def altura_trie(trie):
-    if not trie: return 0
+    if not trie:
+        return 0
 
     v, left, right = trie
 
-    if not left and not right: return 0
+    if not left and not right:
+        return 0
 
     ml = -1
     mr = -1
@@ -77,11 +85,13 @@ def altura_trie(trie):
         ml = max(ml, altura_trie(left) + 1)
     if right:
         mr = max(mr, altura_trie(right) + 1)
-    
+
     return max(ml, mr)
 
+
 def ancho_trie(trie):
-    if not trie: return 0
+    if not trie:
+        return 0
 
     S = [(trie, 0)]
     cLevel = 0
@@ -91,22 +101,25 @@ def ancho_trie(trie):
     while S:
         nodo, level = S.pop(0)
 
-        if level == cLevel: maxAux += 1
+        if level == cLevel:
+            maxAux += 1
         else:
             maxAncho = max(maxAncho, maxAux)
             cLevel = level
             maxAux = 1
-        
+
         if nodo[1]:
-            S.append((nodo[1], level+1))
+            S.append((nodo[1], level + 1))
         if nodo[2]:
-            S.append((nodo[2], level+1))
-        
+            S.append((nodo[2], level + 1))
+
     maxAncho = max(maxAncho, maxAux)
     return maxAncho
 
+
 def nodos_nivel(trie):
-    if not trie: return []
+    if not trie:
+        return []
 
     S = [(trie, 0)]
     cLevels = []
@@ -120,14 +133,15 @@ def nodos_nivel(trie):
         cLevels[level] += 1
 
         if nodo[1]:
-            S.append((nodo[1], level+1))
+            S.append((nodo[1], level + 1))
         if nodo[2]:
-            S.append((nodo[2], level+1))
-        
+            S.append((nodo[2], level + 1))
+
     return cLevels
-    
+
+
 def create_huff(codigos):
-    binary = ''
+    binary = ""
     diccionario = {}
 
     for i in codigos:
@@ -137,9 +151,10 @@ def create_huff(codigos):
         binary += diccionario[i]
 
     bits = bit.bitarray(binary)
- 
-    with open(f"{path_file}.huff", 'wb') as bf:
+
+    with open(f"{path_file}.huff", "wb") as bf:
         bits.tofile(bf)
+
 
 def create_stats(trie, tablaFreq):
     altura = altura_trie(trie)
@@ -150,31 +165,35 @@ def create_stats(trie, tablaFreq):
         "Altura del arbol": altura,
         "Anchura del arbol": ancho,
         "Cantidad de nodos por nivel": nodosNivel,
-        "Tabla de frecuencias": tablaFreq
+        "Tabla de frecuencias": tablaFreq,
     }
 
-    with open(f'{path_file}.stats', 'w') as file:
+    with open(f"{path_file}.stats", "w") as file:
         for key, value in stats.items():
             file.write(f"{key}: {value}\n")
-    
+
+
 def create_table(codigos):
     # [prefijo, codigo]
     tabla = []
 
+    # cambia los parentesis redondos por cuadrados
     for i, y in codigos:
         tabla.append([i, y])
-    
-    anchos = [max(len(str(fila[i])) for fila in tabla) for i in range(len(tabla[0]))]
+
+    # Ordenada de menor a mayor a razon de su cantidad de bits
+    tablaSorted = sorted(tabla, key=lambda x: len(list(x[1])))
 
     lineas = []
-    for fila in tabla:
-        linea = "".join(str(fila[i]).ljust(anchos[i] + 2) for i in range(len(fila)))
+    for fila in tablaSorted:
+        linea = rf"{fila[0].encode('unicode_escape').decode()}  {fila[1]}"
         lineas.append(linea)
-    contend = "\n".join(lineas)
+
+    contenido = "\n".join(lineas)
 
     name_file = f"{path_file}.table"
-    with open(name_file, "w") as ar:
-        ar.write(contend)
+    with open(name_file, "w") as f:
+        f.write(contenido)
 
 
 def main():
@@ -192,5 +211,6 @@ def main():
     print(f"Bits {path_file}: ", os.stat(path_file).st_size)
     print(f"Bits {path_file}.huff: ", os.stat(f"{path_file}.huff").st_size)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

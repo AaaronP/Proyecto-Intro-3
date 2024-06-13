@@ -54,6 +54,7 @@ def create_trie(prefixs):
 
     return biblioteca[0][0]
 
+
 def translate(trie, binary):
     original = trie
     txt = ""
@@ -63,6 +64,7 @@ def translate(trie, binary):
     while i < len(binary):
         v, left, right = current_trie
 
+        # verificamos que el nodo destino sea de tipo string
         if not left and not right and isinstance(v, str):
             txt += v
             current_trie = original
@@ -105,6 +107,7 @@ def main():
 
     trie = create_trie(stats)
     text = translate(trie, bits)
+
     print(text)
 
 
