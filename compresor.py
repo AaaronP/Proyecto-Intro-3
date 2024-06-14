@@ -31,7 +31,7 @@ def frecuancia(text):
 
 # Crea el trie con listas
 # Dominio: lista con tuplas de los prefijos y frecuencias
-# Codominio: Un arbol binario trie [int, [list], [list]]
+# Codominio: Un arbol binario trie [raiz, [], []]   
 def create_trie(prefixs):
     # transforma los prefijos en la forma [prefix, [], []]
     biblioteca = []
@@ -51,7 +51,7 @@ def create_trie(prefixs):
     return biblioteca[0][0]
 
 
-# Obtenie el codigo para cada prefijo
+# Obtiene el codigo para cada prefijo
 # Dominio: un arbol trie
 # Codominio: una lista con tuplas [(prefix, '010'), (...)]
 def translate(trie, camino=""):
@@ -69,6 +69,9 @@ def translate(trie, camino=""):
     return L + R
 
 
+# Obtiene la altura del arbol trie
+# Dominio: Un arbol binario trie
+# Codominio: Un numero natural
 def altura_trie(trie):
     if not trie:
         return 0
@@ -89,6 +92,9 @@ def altura_trie(trie):
     return max(ml, mr)
 
 
+# Obtiene el ancho del trie
+# Dominio: Un arbol binario trie
+# Codominio: Un numero natural
 def ancho_trie(trie):
     if not trie:
         return 0
@@ -117,6 +123,9 @@ def ancho_trie(trie):
     return maxAncho
 
 
+# Devuelve la cantidad de nodos por nivel
+# Dominio: Un arbol binario trie
+# Codominio: Una lista con numeros naturales
 def nodos_nivel(trie):
     if not trie:
         return []
@@ -140,6 +149,9 @@ def nodos_nivel(trie):
     return cLevels
 
 
+# Crea el archivo huff
+# Dominio: Una lista con tuplas donde la x es el prefijo y el y es el codigo binario
+# Codominio: Nada (None), crea el archivo .huff
 def create_huff(codigos):
     binary = ""
     diccionario = {}
@@ -156,6 +168,9 @@ def create_huff(codigos):
         bits.tofile(bf)
 
 
+# Crea el archivo stats
+# Dominio: Un arbol binario trie y la tabla de frecuencias
+# Codominio: Nada (None). Crea el archivo .stats
 def create_stats(trie, tablaFreq):
     altura = altura_trie(trie)
     ancho = ancho_trie(trie)
@@ -173,6 +188,8 @@ def create_stats(trie, tablaFreq):
             file.write(f"{key}: {value}\n")
 
 
+# Dominio: Una lista con tuplas donde la x es el prefijo y el y es el codigo binario
+# Codominio: Nada (None). Crea el archivo .table
 def create_table(codigos):
     # [prefijo, codigo]
     tabla = []

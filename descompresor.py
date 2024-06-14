@@ -108,7 +108,8 @@ def main():
     trie = create_trie(stats)
     text = translate(trie, bits)
 
-    print(text)
+    with open(path_huff[:-5], "w") as f:
+        f.write(text)
 
 
 if __name__ == "__main__":
