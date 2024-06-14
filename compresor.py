@@ -5,7 +5,7 @@ import os
 path_file = ""
 text = ""
 
-if len(sys.argv) == 0:
+if len(sys.argv) == 1:
     print("El programa no tiene argumentos")
 else:
     path_file = sys.argv[1]
@@ -182,10 +182,10 @@ def create_table(codigos):
         tabla.append([i, y])
 
     # Ordenada de menor a mayor a razon de su cantidad de bits
-    tablaSorted = sorted(tabla, key=lambda x: len(list(x[1])))
+    tableSorted = sorted(tabla, key=lambda x: len(list(x[1])))
 
     lineas = []
-    for fila in tablaSorted:
+    for fila in tableSorted:
         linea = rf"{fila[0].encode('unicode_escape').decode()}  {fila[1]}"
         lineas.append(linea)
 
@@ -197,6 +197,7 @@ def create_table(codigos):
 
 
 def main():
+    # [(prefix, freq), (...)]
     biblioteca = frecuancia(text)
     trie = create_trie(biblioteca)
     codigos = translate(trie)
@@ -208,8 +209,8 @@ def main():
     print(f"{path_file}.huff {path_file}.table {path_file}.stats")
 
     # Files bits size
-    print(path_file, os.stat(path_file).st_size, 'bits')
-    print(f"{path_file}.huff", os.stat(f"{path_file}.huff").st_size, 'bits')
+    print(path_file, os.stat(path_file).st_size, "bits")
+    print(f"{path_file}.huff", os.stat(f"{path_file}.huff").st_size, "bits")
 
 
 if __name__ == "__main__":
