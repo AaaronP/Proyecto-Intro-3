@@ -3,6 +3,9 @@ import re
 import bitarray as bit
 
 
+# Obtener los prefijos y sus repectivos codigos binarios
+# Dominio: El archivo .table
+# Codominio: un dicionario con la key de prefijos y el value como codigo binario
 def get_table(path_table):
     diccionario = {}
     with open(path_table, "r") as ar:
@@ -20,6 +23,9 @@ def get_table(path_table):
     return diccionario
 
 
+# Obtener las frecuencias de cada caracter
+# Domino: la direccion del archivo .stats
+# Codominio: Una lista con tuplas donde la x son los prefijos y la y son las frecuencias
 def get_stats(path_stats):
     freq = []
     txt = ""
@@ -33,9 +39,9 @@ def get_stats(path_stats):
     return freq
 
 
-# Crea el trie con listas
+# Crea el trie
 # Dominio: lista con tuplas de los prefijos y frecuencias
-# Codominio: Un arbol binario trie [int, [list], [list]]
+# Codominio: Un arbol binario trie [int, [], []]
 def create_trie(prefixs):
     # transforma los prefijos en la forma [prefix, [], []]
     biblioteca = []
@@ -54,7 +60,9 @@ def create_trie(prefixs):
 
     return biblioteca[0][0]
 
-
+# Traduce el binario a texto legible
+# Dominio: una arbol trie
+# Codomino: una cadena
 def translate(trie, binary):
     original = trie
     txt = ""

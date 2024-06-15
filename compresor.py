@@ -31,7 +31,7 @@ def frecuancia(text):
 
 # Crea el trie con listas
 # Dominio: lista con tuplas de los prefijos y frecuencias
-# Codominio: Un arbol binario trie [raiz, [], []]   
+# Codominio: Un arbol binario trie [raiz, [], []]
 def create_trie(prefixs):
     # transforma los prefijos en la forma [prefix, [], []]
     biblioteca = []
@@ -161,7 +161,7 @@ def create_huff(codigos):
 
     for i in text:
         binary += diccionario[i]
-
+    
     bits = bit.bitarray(binary)
 
     with open(f"{path_file}.huff", "wb") as bf:
@@ -171,6 +171,7 @@ def create_huff(codigos):
 # Crea el archivo stats
 # Dominio: Un arbol binario trie y la tabla de frecuencias
 # Codominio: Nada (None). Crea el archivo .stats
+# [(prefijo, frecuencia: int)]
 def create_stats(trie, tablaFreq):
     altura = altura_trie(trie)
     ancho = ancho_trie(trie)
