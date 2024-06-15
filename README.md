@@ -17,7 +17,7 @@ Este repositorio contiene una implementación del algoritmo de Huffman para la c
 Proyecto-Intro-3/
 │
 ├── README.md
-├── compresoy.py
+├── compresor.py
 ├── decompresor.py
 ├── huffman.py
 └── example.txt
