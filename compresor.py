@@ -2,16 +2,6 @@ import bitarray as bit
 import sys
 import os
 
-path_file = ""
-text = ""
-
-if len(sys.argv) == 1:
-    print("El programa no tiene argumentos")
-else:
-    path_file = sys.argv[1]
-    with open(path_file, "r") as h:
-        text = h.read()
-
 
 # Obtener los prefijos y su frecuencia
 # Domino: string
@@ -152,7 +142,7 @@ def nodos_nivel(trie):
 # Crea el archivo huff
 # Dominio: Una lista con tuplas donde la x es el prefijo y el y es el codigo binario
 # Codominio: Nada (None), crea el archivo .huff
-def create_huff(codigos):
+def create_huff(codigos, text, path_file):
     binary = ""
     diccionario = {}
 
@@ -161,18 +151,20 @@ def create_huff(codigos):
 
     for i in text:
         binary += diccionario[i]
-    
+
     bits = bit.bitarray(binary)
 
     with open(f"{path_file}.huff", "wb") as bf:
         bits.tofile(bf)
+
+    return bits
 
 
 # Crea el archivo stats
 # Dominio: Un arbol binario trie y la tabla de frecuencias
 # Codominio: Nada (None). Crea el archivo .stats
 # [(prefijo, frecuencia: int)]
-def create_stats(trie, tablaFreq):
+def create_stats(trie, tablaFreq, path_file, bits):
     altura = altura_trie(trie)
     ancho = ancho_trie(trie)
     nodosNivel = nodos_nivel(trie)
@@ -182,6 +174,7 @@ def create_stats(trie, tablaFreq):
         "Anchura del arbol": ancho,
         "Cantidad de nodos por nivel": nodosNivel,
         "Tabla de frecuencias": tablaFreq,
+        "Longitud": len(bits),
     }
 
     with open(f"{path_file}.stats", "w") as file:
@@ -191,7 +184,7 @@ def create_stats(trie, tablaFreq):
 
 # Dominio: Una lista con tuplas donde la x es el prefijo y el y es el codigo binario
 # Codominio: Nada (None). Crea el archivo .table
-def create_table(codigos):
+def create_table(codigos, path_file):
     # [prefijo, codigo]
     tabla = []
 
@@ -215,14 +208,25 @@ def create_table(codigos):
 
 
 def main():
+    path_file = ""
+    text = ""
+
+    if len(sys.argv) <= 1:
+        print("El programa no tiene argumentos")
+        return -1
+
+    path_file = sys.argv[1]
+    with open(path_file, "r") as h:
+        text = h.read()
+
     # [(prefix, freq), (...)]
     biblioteca = frecuancia(text)
     trie = create_trie(biblioteca)
     codigos = translate(trie)
 
-    create_table(codigos)
-    create_huff(codigos)
-    create_stats(trie, biblioteca)
+    bits = create_huff(codigos, text, path_file)
+    create_table(codigos, path_file)
+    create_stats(trie, biblioteca, path_file, bits)
 
     print(f"{path_file}.huff {path_file}.table {path_file}.stats")
 

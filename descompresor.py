@@ -10,6 +10,8 @@ def get_table(path_table):
     diccionario = {}
     with open(path_table, "r") as ar:
         for i in ar:
+            # txt = [x,y]
+            # strip() elimina los espacios vacios
             txt = i.strip().split()
 
             # validar si el prefix es ' '
@@ -33,10 +35,11 @@ def get_stats(path_stats):
         txt = p.read()
 
     freq_list = re.search(r"Tabla de frecuencias: (\[.*\])", txt).group(1)
+    longitud = int(re.search(r"Longitud: \s*(\d+)", txt).group(1))
 
     freq = eval(freq_list)
 
-    return freq
+    return freq, longitud
 
 
 # Crea el trie
@@ -59,6 +62,7 @@ def create_trie(prefixs):
         biblioteca.sort(key=lambda x: x[1])
 
     return biblioteca[0][0]
+
 
 # Traduce el binario a texto legible
 # Dominio: una arbol trie
@@ -101,20 +105,21 @@ def main():
     path_stats = ""
 
     if len(sys.argv) <= 1:
-        print("hola, no tiene argumentos")
-    else:
-        path_huff = sys.argv[1]
-        path_table = sys.argv[2]
-        path_stats = sys.argv[3]
+        print("El programa no tiene argumentos")
+        return -1
+
+    path_huff = sys.argv[1]
+    path_table = sys.argv[2]
+    path_stats = sys.argv[3]
 
     with open(path_huff, "rb") as bt:
         bits.fromfile(bt)
 
     table = get_table(path_table)
-    stats = get_stats(path_stats)
+    stats, longitud = get_stats(path_stats)
 
     trie = create_trie(stats)
-    text = translate(trie, bits)
+    text = translate(trie, bits[:longitud])
 
     with open(path_huff[:-5], "w") as f:
         f.write(text)
