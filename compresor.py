@@ -220,7 +220,7 @@ def main():
         text = h.read()
 
     # [(prefix, freq), (...)]
-    biblioteca = frecuancia(text)
+    biblioteca = frecuencia(text)
     trie = create_trie(biblioteca)
     codigos = translate(trie)
 
