@@ -6,7 +6,7 @@ import os
 # Obtener los prefijos y su frecuencia
 # Domino: string
 # Codomino: lista de tuplas [(x: str, y: int), (...)]
-def frecuancia(text):
+def frecuencia(text):
     biblioteca = dict()
 
     for i in text:
