@@ -24,7 +24,6 @@ def get_table(path_table):
                 diccionario[" "] = txt[0]
     return diccionario
 
-
 # Obtener las frecuencias de cada caracter
 # Domino: la direccion del archivo .stats
 # Codominio: Una lista con tuplas donde la x son los prefijos y la y son las frecuencias
@@ -39,7 +38,7 @@ def get_stats(path_stats):
 
     freq = eval(freq_list)
 
-    return freq, longitud
+    return freq,longitud
 
 
 # Crea el trie
